@@ -1,0 +1,11 @@
+﻿using System.Collections.Generic;
+
+namespace cu.ApiBasics.Lesvoorbeeld.Avond.Api.DTOs.Products
+{
+    public class ProductsResponseDto : BaseResponseDto
+    {
+        public decimal Price { get; set; }
+        public string Category { get; set; }
+        public IEnumerable<string> Properties { get; set; }
+    }
+}
