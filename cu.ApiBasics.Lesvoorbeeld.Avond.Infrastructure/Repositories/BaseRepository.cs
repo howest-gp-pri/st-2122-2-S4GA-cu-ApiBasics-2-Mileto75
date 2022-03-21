@@ -20,10 +20,21 @@ namespace cu.ApiBasics.Lesvoorbeeld.Avond.Infrastructure.Repositories
             _table = _applicationDbContext.Set<T>();
         }
 
-        public async Task AddAsync(T entity)
+        public async Task<bool> AddAsync(T entity)
         {
             await _table.AddAsync(entity);
-            await _applicationDbContext.SaveChangesAsync();
+            try 
+            {
+                await _applicationDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                //log the message
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            
         }
 
         public async Task DeleteAsync(T entity)

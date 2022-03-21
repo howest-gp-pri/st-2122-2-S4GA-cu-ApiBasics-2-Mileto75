@@ -14,11 +14,41 @@ namespace cu.ApiBAsics.Lesvoorbeeld.Avond.Core.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly IPropertyRepository _propertyRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository,
+            IPropertyRepository propertyRepository)
         {
             _productRepository = productRepository;
+            _propertyRepository = propertyRepository;
         }
+
+        public async Task<ItemResultModel<Product>> Add(string name, int categoryId, decimal price, IEnumerable<int> properties)
+        {
+            //perform checks(price for example)
+            //get the properties
+            var allProperties = await _propertyRepository.GetAllAsync();
+            //new product
+            var newProduct = new Product
+            {
+                Name = name,
+                Price = price,
+                CategoryId = categoryId,
+                Properties = allProperties.Where(pr => properties.Contains(pr.Id))
+                .ToList()
+            };
+            //save to the database
+            if(!await _productRepository.AddAsync(newProduct))
+            {
+                return new ItemResultModel<Product> {
+                    IsSuccess = false,
+                    ValidationErrors = new List<ValidationResult>{new ValidationResult("Something went wrong!") }
+                };
+            }
+            //save success!
+            return new ItemResultModel<Product> {IsSuccess = true};
+        }
+
         public async Task<ItemResultModel<Product>> GetAllAsync()
         {
             var products = await _productRepository.GetAllAsync();
@@ -51,5 +81,7 @@ namespace cu.ApiBAsics.Lesvoorbeeld.Avond.Core.Services
             itemResultModel.IsSuccess = true;
             return itemResultModel;
         }
+
+
     }
 }

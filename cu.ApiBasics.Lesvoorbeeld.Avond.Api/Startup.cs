@@ -39,6 +39,7 @@ namespace cu.ApiBasics.Lesvoorbeeld.Avond.Api
             //repositories
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IPropertyRepository, PropertyRepository>();
             //services
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();

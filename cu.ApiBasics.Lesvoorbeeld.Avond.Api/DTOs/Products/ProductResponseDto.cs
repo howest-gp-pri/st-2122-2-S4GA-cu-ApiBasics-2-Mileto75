@@ -2,7 +2,7 @@
 
 namespace cu.ApiBasics.Lesvoorbeeld.Avond.Api.DTOs.Products
 {
-    public class ProductsResponseDto : BaseResponseDto
+    public class ProductResponseDto : BaseResponseDto
     {
         public decimal Price { get; set; }
         public string Category { get; set; }

@@ -12,5 +12,7 @@ namespace cu.ApiBAsics.Lesvoorbeeld.Avond.Core.Interfaces.Services
     {
         Task<ItemResultModel<Product>> GetAllAsync();
         Task<ItemResultModel<Product>> GetByIdAsync(int id);
+        Task<ItemResultModel<Product>> Add(string name, int categoryId,
+            decimal price, IEnumerable<int> properties);
     }
 }

@@ -7,13 +7,7 @@ using System.Threading.Tasks;
 
 namespace cu.ApiBAsics.Lesvoorbeeld.Avond.Core.Interfaces.Repositories
 {
-    public interface IRepository<T> where T : BaseEntity
+    public interface IPropertyRepository : IRepository<Property>
     {
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<T> GetByIdAsync(int id);
-        Task UpdateAsync(T entity);
-        Task<bool> AddAsync(T entity);
-        Task DeleteAsync(T entity);
-
     }
 }

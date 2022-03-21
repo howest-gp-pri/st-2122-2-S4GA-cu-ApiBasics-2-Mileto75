@@ -17,12 +17,31 @@ namespace cu.ApiBasics.Lesvoorbeeld.Avond.Api.Controllers
             _productService = productService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            //get the product
+            var product = await _productService.GetByIdAsync(id);
+            if(!product.IsSuccess)
+            {
+                return BadRequest(product.ValidationErrors);
+            }
+            ProductResponseDto productsResponseDto = new ProductResponseDto
+            {
+                Name = product.Items.First().Name,
+                Category = product.Items.First().Category.Name,
+                Properties = product.Items.First().Properties
+                .Select(pr => pr.Name)
+
+            };
+            return Ok(productsResponseDto);
+        }
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var products = await _productService.GetAllAsync();
             var productResponseDto = products.Items.Select(p =>
-                new ProductsResponseDto
+                new ProductResponseDto
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -32,6 +51,29 @@ namespace cu.ApiBasics.Lesvoorbeeld.Avond.Api.Controllers
                 );
                
             return Ok(productResponseDto);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Add(ProductAddRequestDto
+            productAddRequestDto)
+        {
+            //check for mmodel errors
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.Values);
+            }
+            //check for database errors
+            var result = await _productService.Add(
+                productAddRequestDto.Name,
+                productAddRequestDto.CategoryId,
+                productAddRequestDto.Price,
+                productAddRequestDto.Properties
+                );
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.ValidationErrors);
+            }
+            //a Ok
+            return Ok("Product added!");
         }
     }
 }
