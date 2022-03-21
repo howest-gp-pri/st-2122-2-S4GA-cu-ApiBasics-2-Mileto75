@@ -27,7 +27,7 @@ namespace cu.ApiBAsics.Lesvoorbeeld.Avond.Core.Services
         {
             //perform checks(price for example)
             //get the properties
-            var allProperties = await _propertyRepository.GetAllAsync()
+            var allProperties = await _propertyRepository.GetAllAsync();
                 
             //new product
             var newProduct = new Product
