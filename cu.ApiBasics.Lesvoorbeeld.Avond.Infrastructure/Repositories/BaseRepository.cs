@@ -23,18 +23,7 @@ namespace cu.ApiBasics.Lesvoorbeeld.Avond.Infrastructure.Repositories
         public async Task<bool> AddAsync(T entity)
         {
             await _table.AddAsync(entity);
-            try 
-            {
-                await _applicationDbContext.SaveChangesAsync();
-                return true;
-            }
-            catch (DbUpdateException ex)
-            {
-                //log the message
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-            
+            return await SaveChangesAsync();
         }
 
         public async Task DeleteAsync(T entity)
@@ -53,10 +42,30 @@ namespace cu.ApiBasics.Lesvoorbeeld.Avond.Infrastructure.Repositories
             return await _table.ToListAsync();
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task<bool> UpdateAsync(T entity)
         {
             _table.Update(entity);
-            await _applicationDbContext.SaveChangesAsync();
+            return await SaveChangesAsync();
+        }
+
+        private async Task<bool> SaveChangesAsync()
+        {
+            try
+            {
+                await _applicationDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                //log the message
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public IQueryable<T> GetAll()
+        {
+            return _table.AsQueryable();
         }
     }
 }

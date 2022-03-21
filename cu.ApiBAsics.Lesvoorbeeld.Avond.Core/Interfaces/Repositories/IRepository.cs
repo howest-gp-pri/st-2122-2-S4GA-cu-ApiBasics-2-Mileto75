@@ -11,9 +11,10 @@ namespace cu.ApiBAsics.Lesvoorbeeld.Avond.Core.Interfaces.Repositories
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
-        Task UpdateAsync(T entity);
+        Task<bool> UpdateAsync(T entity);
         Task<bool> AddAsync(T entity);
         Task DeleteAsync(T entity);
+        IQueryable <T> GetAll();
 
     }
 }

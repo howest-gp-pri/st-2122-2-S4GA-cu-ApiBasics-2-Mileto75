@@ -27,7 +27,8 @@ namespace cu.ApiBAsics.Lesvoorbeeld.Avond.Core.Services
         {
             //perform checks(price for example)
             //get the properties
-            var allProperties = await _propertyRepository.GetAllAsync();
+            var allProperties = await _propertyRepository.GetAllAsync()
+                
             //new product
             var newProduct = new Product
             {
@@ -82,6 +83,42 @@ namespace cu.ApiBAsics.Lesvoorbeeld.Avond.Core.Services
             return itemResultModel;
         }
 
-
+        public async Task<ItemResultModel<Product>> UpdateAsync(int id, string name, int categoryId, decimal price, IEnumerable<int> properties)
+        {
+            //check for null
+            //get the product
+            var product = await _productRepository.GetByIdAsync(id);
+            if(product == null)
+            {
+                return new ItemResultModel<Product>
+                {
+                    IsSuccess = false,
+                    ValidationErrors = 
+                    new List<ValidationResult> {
+                    new ValidationResult("Product not found!")
+                    }
+                };
+            }
+            //update the product
+            var allProperties = await _propertyRepository.GetAllAsync();
+            product.Name = name;
+            product.CategoryId = categoryId;
+            product.Price = price;
+            product.Properties =
+            _propertyRepository.GetAll().Where(pr => properties.Contains(pr.Id))
+            .ToList();
+            //save to the db
+            if(!await _productRepository.UpdateAsync(product))
+            {
+                return new ItemResultModel<Product>
+                {
+                    IsSuccess = false,
+                    ValidationErrors = new List<ValidationResult>
+                    { new ValidationResult("Something went wrong!")}
+                };
+            }
+            //A ok
+            return new ItemResultModel<Product> { IsSuccess = true };
+        }
     }
 }

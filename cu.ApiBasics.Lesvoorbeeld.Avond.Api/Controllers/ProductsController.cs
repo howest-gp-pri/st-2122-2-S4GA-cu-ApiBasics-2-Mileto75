@@ -75,5 +75,30 @@ namespace cu.ApiBasics.Lesvoorbeeld.Avond.Api.Controllers
             //a Ok
             return Ok("Product added!");
         }
+        //put to update
+        [HttpPut]
+        public async Task<IActionResult> Update(ProductUpdateRequestDto
+            productUpdateRequestDto)
+        {
+            //check for validation errors
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.Values);
+            }
+            var result = await _productService.UpdateAsync(
+                productUpdateRequestDto.Id,
+                productUpdateRequestDto.Product.Name,
+                productUpdateRequestDto.Product.CategoryId,
+                productUpdateRequestDto.Product.Price,
+                productUpdateRequestDto.Product.Properties
+                );
+            //check for database errors
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.ValidationErrors);
+            }
+            //A ok
+            return Ok("Product updated!");
+        }
     }
 }
