@@ -47,8 +47,8 @@ namespace cu.ApiBasics.Lesvoorbeeld.Avond.Api.Controllers
                     Name = p.Name,
                     Category = p.Category.Name,
                     Price = p.Price,
-                    Properties = p.Properties.Select(p => p.Name)                }
-                );
+                    Properties = p.Properties.Select(p => p.Name)
+                });
                
             return Ok(productResponseDto);
         }
@@ -56,7 +56,7 @@ namespace cu.ApiBasics.Lesvoorbeeld.Avond.Api.Controllers
         public async Task<IActionResult> Add(ProductAddRequestDto
             productAddRequestDto)
         {
-            //check for mmodel errors
+            //check for model errors
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState.Values);
