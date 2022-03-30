@@ -100,5 +100,14 @@ namespace cu.ApiBasics.Lesvoorbeeld.Avond.Api.Controllers
             //A ok
             return Ok("Product updated!");
         }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if(await _productService.DeleteAsync(id))
+            {
+                return Ok("Product deleted!");
+            }
+            return BadRequest("Something went wrong! please try again!");
+        }
     }
 }

@@ -16,5 +16,6 @@ namespace cu.ApiBAsics.Lesvoorbeeld.Avond.Core.Interfaces.Services
             decimal price, IEnumerable<int> properties);
         Task<ItemResultModel<Product>> UpdateAsync(int id,string name, int categoryId,
             decimal price, IEnumerable<int> properties);
+        Task<bool> DeleteAsync(int id);
     }
 }

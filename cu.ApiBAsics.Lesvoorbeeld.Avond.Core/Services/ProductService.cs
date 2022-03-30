@@ -50,6 +50,17 @@ namespace cu.ApiBAsics.Lesvoorbeeld.Avond.Core.Services
             return new ItemResultModel<Product> {IsSuccess = true};
         }
 
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var productToDelete = await _productRepository.GetByIdAsync(id);
+            if(productToDelete == null)
+            {
+                return false;
+            }
+            await _productRepository.DeleteAsync(productToDelete);
+            return true;
+        }
+
         public async Task<ItemResultModel<Product>> GetAllAsync()
         {
             var products = await _productRepository.GetAllAsync();
